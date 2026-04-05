@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Chronicles — Personal Journal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060E1A;
+            --bg2: #0B1929;
+            --bg3: #0D2137;
+            --bgcard: #0C1E33;
+            --bgcard2: #112440;
+            --bginput: #0A1828;
+            --border: rgba(201, 168, 76, 0.13);
+            --bordhi: rgba(201, 168, 76, 0.32);
+            --gold: #C9A84C;
+            --goldlt: #E2B96F;
+            --goldbr: #F0CD85;
+            --goldpa: #FAE9B5;
+            --golddim: #8C722A;
+            --text: #F0E6C8;
+            --text2: #C5B89A;
+            --text3: #8A7E68;
+            --text4: #4A4234;
+            --red: #E85555;
+            --green: #4CAF7A;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+            --shadowg: 0 4px 24px rgba(201, 168, 76, 0.14);
+            --r: 18px;
+            --rsm: 10px;
+            --navh: 70px;
+            --toph: 58px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* Grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ═══ SPLASH ═══ */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: radial-gradient(ellipse at 50% 60%, #0D2137 0%, #060E1A 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .sp-stars {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .sp-star {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--goldpa);
+            animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: .07;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: .75;
+                transform: scale(1.6);
+            }
+        }
+
+        .sp-rings {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin-bottom: 28px;
+        }
+
+        .sp-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 168, 76, var(--op, .15));
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ringPulse 4s ease-in-out infinite var(--del, 0s);
+        }
+
+        @keyframes ringPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .4;
+            }
+        }
+
+        .sp-ring:nth-child(1) {
+            width: 110px;
+            height: 110px;
+            --op: .18;
+            --del: 0s;
+        }
+
+        .sp-ring:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            --op: .28;
+            --del: .5s;
+        }
+
+        .sp-ring:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            --op: .4;
+            --del: 1s;
+        }
+
+        .sp-emblem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            animation: embFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes embFloat {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -56%) scale(1.06);
+            }
+        }
+
+        .sp-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--goldbr) 45%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fuA .9s ease .3s both;
+        }
+
+        .sp-tag {
+            font-size: .76rem;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-top: 6px;
+            animation: fuA .9s ease .55s both;
+        }
+
+        .sp-bar {
+            width: 130px;
+            height: 2px;
+            background: rgba(201, 168, 76, .12);
+            border-radius: 2px;
+            margin-top: 28px;
+            overflow: hidden;
+            animation: fuA .9s ease .7s both;
+        }
+
+        .sp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--goldbr));
+            border-radius: 2px;
+            width: 0;
+            animation: loadB 2.3s ease .6s forwards;
+        }
+
+        @keyframes loadB {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes fuA {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══ APP SHELL ═══ */
+        #app {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity .6s ease;
+        }
+
+        #app.visible {
+            opacity: 1;
+        }
+
+        /* ═══ TOP BAR ═══ */
+        .topbar {
+            height: var(--toph);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+            background: var(--bg);
+            border-bottom: 1px solid transparent;
+            transition: border-color .3s;
+        }
+
+        .topbar.shadow {
+            border-color: var(--border);
+        }
+
+        .tb-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(201, 168, 76, .07);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background .2s, border-color .2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .tb-btn:hover {
+            background: rgba(201, 168, 76, .14);
+            border-color: var(--bordhi);
+        }
+
+        .tb-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        .tb-btn.invisible {
+            visibility: hidden;
+        }
+
+        .tb-title {
+            flex: 1;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: .95rem;
+            letter-spacing: .12em;
+            background: linear-gradient(135deg, var(--gold), var(--goldbr));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tb-save {
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            color: var(--bg);
+            border: none;
+            border-radius: 10px;
+            padding: 7px 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: .04em;
+            transition: opacity .2s, transform .2s;
+        }
+
+        .tb-save:hover {
+            opacity: .88;
+            transform: scale(.97);
+        }
+
+        .tb-save:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ═══ SCREENS ═══ */
+        .scwrap {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            position: absolute;
+            inset: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: calc(var(--navh) + 16px);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(24px);
+            transition: opacity .32s ease, transform .32s ease;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(201, 168, 76, .18) transparent;
+        }
+
+        .screen::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .screen::-webkit-scrollbar-thumb {
+            background: rgba(201, 168, 76, .18);
+            border-radius: 4px;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
+
+        .screen.bye {
+            opacity: 0;
+            transform: translateX(-24px);
+        }
+
+        /* ═══ BOTTOM NAV ═══ */
+        .botnav {
+            height: var(--navh);
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nb {
+            flex: 1;
+            height: 100%;
+            background: none;
+            border: none;
+            color: var(--text3);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .58rem;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            transition: color .2s;
+            position: relative;
+        }
+
+        .nb:hover {
+            color: var(--gold);
+        }
+
+        .nb.on {
+            color: var(--gold);
+        }
+
+        .nb .ico {
+            font-size: 1.2rem;
+            transition: transform .2s;
+        }
+
+        .nb.on .ico {
+            transform: scale(1.1);
+        }
+
+        .nb.on::after {
+            content: '';
+            position: absolute;
+            bottom: 7px;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        .nb.fab {
+            flex: 0 0 64px;
+        }
+
+        .fab {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--bg);
+            box-shadow: 0 4px 18px rgba(201, 168, 76, .38);
+            transition: transform .2s, box-shadow .2s;
+            font-weight: 700;
+        }
+
+        .nb.fab:hover .fab {
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 8px 26px rgba(201, 168, 76, .5);
+        }
+
+        /* ═══ HOME SCREEN ═══ */
+        .hdr {
+            padding: 20px 20px 10px;
+        }
+
+        .hdr-greet {
+            font-family: 'Cinzel', serif;
+            font-size: .68rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 3px;
+        }
+
+        .hdr-date {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.55rem;
+            color: var(--text);
+            font-weight: 300;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 14px;
+        }
+
+        .stt {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 10px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .stn {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stl {
+            font-size: .63rem;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-top: 3px;
+        }
+
+        .srch {
+            margin: 0 20px 14px;
+            position: relative;
+        }
+
+        .srch input {
+            width: 100%;
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: var(--rsm);
+            padding: 11px 14px 11px 38px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .srch input:focus {
+            border-color: var(--bordhi);
+        }
+
+        .srch input::placeholder {
+            color: var(--text3);
+        }
+
+        .srch-ic {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3);
+            font-size: .85rem;
+            pointer-events: none;
+        }
+
+        .ftabs {
+            display: flex;
+            gap: 6px;
+            padding: 0 20px 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .ftabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ftab {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: .76rem;
+            color: var(--text3);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .ftab.on {
+            background: rgba(201, 168, 76, .11);
+            border-color: var(--bordhi);
+            color: var(--gold);
+        }
+
+        .sec-hdr {
+            padding: 0 20px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sec-ttl {
+            font-family: 'Cinzel', serif;
+            font-size: .68rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        .elist {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Entry Cards */
+        .ecard {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform .22s, border-color .22s, box-shadow .22s;
+            animation: cin .4s ease both;
+        }
+
+        @keyframes cin {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ecard:hover {
+            transform: translateY(-2px);
+            border-color: rgba(201, 168, 76, .24);
+            box-shadow: var(--shadowg);
+        }
+
+        .ecard-photo {
+            width: 100%;
+            height: 155px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .ecard-body {
+            padding: 13px 16px;
+        }
+
+        .ecard-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 7px;
+        }
+
+        .ecard-mood {
+            font-size: .95rem;
+        }
+
+        .ecard-date {
+            font-size: .7rem;
+            color: var(--golddim);
+            font-family: 'Cinzel', serif;
+            letter-spacing: .05em;
+            flex: 1;
+        }
+
+        .ecard-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.18rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .ecard-prev {
+            font-family: 'Crimson Pro', serif;
+            font-size: .9rem;
+            color: var(--text2);
+            font-style: italic;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .ecard-foot {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-top: 1px solid var(--border);
+            gap: 8px;
+        }
+
+        .ecard-wc {
+            font-size: .66rem;
+            color: var(--text3);
+            flex: 1;
+        }
+
+        .ecard-ph {
+            font-size: .7rem;
+            color: var(--text3);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 56px 36px;
+        }
+
+        .empty-ic {
+            font-size: 2.8rem;
+            margin-bottom: 14px;
+            opacity: .4;
+        }
+
+        .empty-ttl {
+            font-family: 'Cinzel', serif;
+            font-size: .92rem;
+            color: var(--text2);
+            margin-bottom: 7px;
+        }
+
+        .empty-sub {
+            font-size: .82rem;
+            color: var(--text3);
+            line-height: 1.55;
+        }
+
+        /* ═══ WRITE SCREEN ═══ */
+        .wsc {
+            padding-bottom: calc(var(--navh)+24px);
+        }
+
+        .wdr {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .wdate {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: .78rem;
+            letter-spacing: .08em;
+            cursor: pointer;
+            outline: none;
+            flex: 1;
+            color-scheme: dark;
+        }
+
+        .wdate::-webkit-calendar-picker-indicator {
+            filter: invert(.7) sepia(1) saturate(3) hue-rotate(5deg);
+            cursor: pointer;
+        }
+
+        .moodrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .moodrow::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mlb {
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--text3);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .mbtn {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .76rem;
+            color: var(--text2);
+            transition: all .2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mbtn:hover,
+        .mbtn.sel {
+            background: rgba(201, 168, 76, .11);
+            border-color: var(--bordhi);
+            color: var(--gold);
+        }
+
+        .wtitle {
+            width: 100%;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--text);
+            outline: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .wtitle::placeholder {
+            color: var(--text3);
+        }
+
+        .wcontent {
+            width: 100%;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.02rem;
+            color: var(--text2);
+            outline: none;
+            resize: none;
+            line-height: 1.82;
+            min-height: 220px;
+        }
+
+        .wcontent::placeholder {
+            color: var(--text3);
+        }
+
+        .wwc {
+            padding: 0 20px 8px;
+            font-size: .7rem;
+            color: var(--text3);
+        }
+
+        .wsec {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .wslbl {
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--text3);
+            margin-bottom: 10px;
+        }
+
+        .wphoto-area {
+            background: var(--bgcard);
+            border: 2px dashed var(--border);
+            border-radius: var(--rsm);
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: border-color .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wphoto-area:hover {
+            border-color: var(--bordhi);
+        }
+
+        .wphoto-area.has {
+            border-style: solid;
+            border-color: rgba(201, 168, 76, .22);
+        }
+
+        .wphoto-area img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wph-pl {
+            color: var(--text3);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .wph-pl .pic {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .wph-pl .ptxt {
+            font-size: .78rem;
+        }
+
+        .wph-rm {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, .6);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: .78rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* ═══ CALENDAR SCREEN ═══ */
+        .calwrap {
+            padding: 16px 18px;
+        }
+
+        .calnav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .cnbtn {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            color: var(--gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background .2s;
+        }
+
+        .cnbtn:hover {
+            background: rgba(201, 168, 76, .09);
+        }
+
+        .calmttl {
+            flex: 1;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: .95rem;
+            letter-spacing: .1em;
+            color: var(--text);
+        }
+
+        .calwkd {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-bottom: 6px;
+        }
+
+        .calwkd span {
+            text-align: center;
+            font-size: .6rem;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--text3);
+            padding: 4px 0;
+        }
+
+        .calgrid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .cday {
+            aspect-ratio: 1;
+            border-radius: 9px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .18s;
+            position: relative;
+            font-size: .88rem;
+            color: var(--text2);
+            background: transparent;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cday:hover:not(.empty) {
+            background: rgba(201, 168, 76, .07);
+        }
+
+        .cday.empty {
+            pointer-events: none;
+        }
+
+        .cday.oday {
+            background: rgba(201, 168, 76, .11);
+            border: 1px solid var(--bordhi);
+            color: var(--goldbr);
+            font-weight: 600;
+        }
+
+        .cday.has {
+            color: var(--text);
+        }
+
+        .cday.sel {
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            color: var(--bg);
+            font-weight: 700;
+        }
+
+        .cdot {
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 3px;
+        }
+
+        .cday.sel .cdot {
+            background: rgba(6, 14, 26, .5);
+        }
+
+        .calsel {
+            margin-top: 18px;
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+        }
+
+        .calsel-ttl {
+            font-family: 'Cinzel', serif;
+            font-size: .67rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 12px;
+        }
+
+        /* ═══ SETTINGS SCREEN ═══ */
+        .stsec {
+            padding: 18px 18px 0;
+        }
+
+        .stttl {
+            font-family: 'Cinzel', serif;
+            font-size: .68rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stcard {
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .stcard p {
+            font-size: .82rem;
+            color: var(--text2);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .fbstat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--bginput);
+            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+
+        .sdot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sdot.ok {
+            background: var(--green);
+            box-shadow: 0 0 6px rgba(76, 175, 122, .5);
+        }
+
+        .sdot.off {
+            background: var(--text3);
+        }
+
+        .sdot.err {
+            background: var(--red);
+        }
+
+        .stxt {
+            font-size: .79rem;
+            color: var(--text2);
+        }
+
+        .sfield {
+            margin-bottom: 11px;
+        }
+
+        .sfield label {
+            display: block;
+            font-size: .68rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--text3);
+            margin-bottom: 5px;
+        }
+
+        .sfield input {
+            width: 100%;
+            background: var(--bginput);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .82rem;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .sfield input:focus {
+            border-color: var(--bordhi);
+        }
+
+        .sfield input::placeholder {
+            color: var(--text3);
+            font-size: .73rem;
+        }
+
+        .btng {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            color: var(--bg);
+            border: none;
+            border-radius: 10px;
+            padding: 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: .05em;
+            transition: opacity .2s, transform .2s;
+            margin-top: 4px;
+        }
+
+        .btng:hover {
+            opacity: .88;
+            transform: scale(.99);
+        }
+
+        .btns {
+            width: 100%;
+            background: transparent;
+            color: var(--red);
+            border: 1px solid rgba(232, 85, 85, .28);
+            border-radius: 10px;
+            padding: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .84rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background .2s;
+        }
+
+        .btns:hover {
+            background: rgba(232, 85, 85, .08);
+        }
+
+        .btne {
+            width: 100%;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid rgba(201, 168, 76, .28);
+            border-radius: 10px;
+            padding: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .84rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background .2s;
+        }
+
+        .btne:hover {
+            background: rgba(201, 168, 76, .08);
+        }
+
+        /* ═══ ENTRY MODAL ═══ */
+        .movl {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 14, 26, .85);
+            backdrop-filter: blur(9px);
+            z-index: 500;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .28s, visibility .28s;
+        }
+
+        .movl.on {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .msheet {
+            width: 100%;
+            max-height: 92vh;
+            background: var(--bg2);
+            border-radius: 22px 22px 18px 18px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(28px);
+            transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .movl.on .msheet {
+            transform: translateY(0);
+        }
+
+        .mhandle {
+            width: 38px;
+            height: 3px;
+            background: var(--bordhi);
+            border-radius: 3px;
+            margin: 11px auto 0;
+            flex-shrink: 0;
+        }
+
+        .mscroll {
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(201, 168, 76, .18) transparent;
+        }
+
+        .mscroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .mscroll::-webkit-scrollbar-thumb {
+            background: rgba(201, 168, 76, .18);
+            border-radius: 4px;
+        }
+
+        .mphoto {
+            width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .mcontent {
+            padding: 20px;
+        }
+
+        .mmeta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 9px;
+        }
+
+        .mmood {
+            font-size: 1.1rem;
+        }
+
+        .mdate {
+            font-family: 'Cinzel', serif;
+            font-size: .76rem;
+            letter-spacing: .07em;
+            color: var(--golddim);
+            flex: 1;
+        }
+
+        .mtitle {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .mbody {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            color: var(--text2);
+            line-height: 1.82;
+            white-space: pre-wrap;
+        }
+
+        .macts {
+            display: flex;
+            gap: 9px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .medit {
+            flex: 1;
+            background: rgba(201, 168, 76, .09);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .83rem;
+            font-weight: 500;
+            transition: background .2s;
+        }
+
+        .medit:hover {
+            background: rgba(201, 168, 76, .17);
+        }
+
+        .mdel {
+            flex: 1;
+            background: transparent;
+            border: 1px solid rgba(232, 85, 85, .28);
+            color: var(--red);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .83rem;
+            font-weight: 500;
+            transition: background .2s;
+        }
+
+        .mdel:hover {
+            background: rgba(232, 85, 85, .09);
+        }
+
+        .mclose {
+            background: rgba(201, 168, 76, .07);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            border-radius: 10px;
+            width: 42px;
+            padding: 10px 0;
+            cursor: pointer;
+            font-size: .95rem;
+            transition: background .2s;
+        }
+
+        .mclose:hover {
+            background: rgba(201, 168, 76, .14);
+        }
+
+        /* ═══ TOAST ═══ */
+        #toast {
+            position: fixed;
+            bottom: calc(var(--navh)+14px);
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            background: var(--bgcard2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 9px 20px;
+            border-radius: 50px;
+            font-size: .82rem;
+            font-family: 'DM Sans', sans-serif;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .28s, transform .28s;
+            z-index: 900;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ═══ DECORATIVE ═══ */
+        .gdiv {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--golddim), transparent);
+            margin: 0 20px;
+            opacity: .45;
+        }
+
+        .phinput {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════ SPLASH ═══════════════ -->
+    <div id="splash">
+        <div class="sp-stars" id="spStars"></div>
+        <div class="sp-rings">
+            <div class="sp-ring"></div>
+            <div class="sp-ring"></div>
+            <div class="sp-ring"></div>
+            <div class="sp-emblem">📖</div>
+        </div>
+        <div class="sp-title">Chronicles</div>
+        <div class="sp-tag">Your personal journal</div>
+        <div class="sp-bar">
+            <div class="sp-fill"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ APP ═══════════════ -->
+    <div id="app">
+
+        <!-- TOP BAR -->
+        <div class="topbar" id="topbar">
+            <button class="tb-btn invisible" id="tbLeft" onclick="tbLeftAct()">←</button>
+            <div class="tb-title" id="tbTitle">Chronicles</div>
+            <button class="tb-save invisible" id="tbRight" onclick="tbRightAct()">Save</button>
+        </div>
+
+        <!-- SCREENS -->
+        <div class="scwrap">
+
+            <!-- HOME -->
+            <div class="screen active" id="homeScreen">
+                <div class="hdr">
+                    <div class="hdr-greet" id="hgreet">Good Morning</div>
+                    <div class="hdr-date" id="hdate">Monday, April 6</div>
+                </div>
+                <div class="stats">
+                    <div class="stt">
+                        <div class="stn" id="stTotal">0</div>
+                        <div class="stl">Entries</div>
+                    </div>
+                    <div class="stt">
+                        <div class="stn" id="stStreak">0</div>
+                        <div class="stl">Streak</div>
+                    </div>
+                    <div class="stt">
+                        <div class="stn" id="stWords">0</div>
+                        <div class="stl">Words</div>
+                    </div>
+                </div>
+                <div class="srch">
+                    <span class="srch-ic">🔍</span>
+                    <input type="text" id="srchIn" placeholder="Search entries…" oninput="filterEntries()">
+                </div>
+                <div class="ftabs">
+                    <button class="ftab on" onclick="setFilter('all',this)">All Time</button>
+                    <button class="ftab" onclick="setFilter('today',this)">Today</button>
+                    <button class="ftab" onclick="setFilter('week',this)">This Week</button>
+                    <button class="ftab" onclick="setFilter('month',this)">This Month</button>
+                </div>
+                <div class="sec-hdr"><span class="sec-ttl">Journal Entries</span></div>
+                <div class="elist" id="elist"></div>
+            </div>
+
+            <!-- WRITE / EDIT -->
+            <div class="screen wsc" id="writeScreen">
+                <div class="wdr">
+                    <span style="font-size:.9rem;margin-right:2px;opacity:.6">📅</span>
+                    <input type="date" class="wdate" id="wDate">
+                </div>
+                <div class="moodrow">
+                    <span class="mlb">Mood</span>
+                    <!-- mood buttons injected by JS -->
+                </div>
+                <input type="text" class="wtitle" id="wTitle" placeholder="Title your entry…" maxlength="120">
+                <textarea class="wcontent" id="wContent" placeholder="What's on your mind today?…"
+                    oninput="wcCount(this)"></textarea>
+                <div class="wwc" id="wwc">0 words</div>
+                <div class="wsec">
+                    <div class="wslbl">📷 Memory Photo</div>
+                    <div class="wphoto-area" id="wPhArea" onclick="document.getElementById('phInput').click()">
+                        <div class="wph-pl">
+                            <div class="pic">🖼️</div>
+                            <div class="ptxt">Tap to add a photo</div>
+                        </div>
+                        <img id="wPhImg" alt="" style="display:none">
+                        <button class="wph-rm" id="wPhRm" onclick="rmPhoto(event)">✕</button>
+                    </div>
+                    <input type="file" class="phinput" id="phInput" accept="image/*" onchange="handlePh(this)">
+                </div>
+            </div>
+
+            <!-- CALENDAR -->
+            <div class="screen" id="calendarScreen">
+                <div class="calwrap">
+                    <div class="calnav">
+                        <button class="cnbtn" onclick="calShift(-1)">‹</button>
+                        <div class="calmttl" id="calMttl"></div>
+                        <button class="cnbtn" onclick="calShift(1)">›</button>
+                    </div>
+                    <div class="calwkd">
+                        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                    </div>
+                    <div class="calgrid" id="calGrid"></div>
+                    <div class="calsel" id="calSel"></div>
+                </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="screen" id="settingsScreen">
+                <div class="stsec">
+                    <div class="stttl">⚡ Firebase Sync</div>
+                    <div class="stcard">
+                        <p>Connect to Firebase Realtime Database to sync your journal across all your devices. Your data
+                            stays in your own private project.</p>
+                        <div class="fbstat">
+                            <div class="sdot off" id="fbDot"></div>
+                            <span class="stxt" id="fbTxt">Not connected — using local storage</span>
+                        </div>
+                        <div class="sfield"><label>API Key</label><input type="text" id="fbKey" placeholder="AIzaSy…">
+                        </div>
+                        <div class="sfield"><label>Auth Domain</label><input type="text" id="fbAuth"
+                                placeholder="your-app.firebaseapp.com"></div>
+                        <div class="sfield"><label>Database URL</label><input type="text" id="fbDB"
+                                placeholder="https://your-app-default-rtdb.firebaseio.com"></div>
+                        <div class="sfield"><label>Project ID</label><input type="text" id="fbPID"
+                                placeholder="your-project-id"></div>
+                        <div class="sfield"><label>Storage Bucket</label><input type="text" id="fbSB"
+                                placeholder="your-app.appspot.com"></div>
+                        <div class="sfield"><label>Messaging Sender ID</label><input type="text" id="fbMS"
+                                placeholder="123456789012"></div>
+                        <div class="sfield"><label>App ID</label><input type="text" id="fbAID"
+                                placeholder="1:123:web:abc123"></div>
+                        <button class="btng" onclick="saveFbCfg()">🔗 Connect to Firebase</button>
+                        <button class="btns" onclick="disconnFb()">Disconnect &amp; Clear Config</button>
+                    </div>
+
+                    <div class="stttl" style="margin-top:6px">📓 Data Management</div>
+                    <div class="stcard">
+                        <p>Export a copy of all your journal entries as a JSON file, or clear all local data.</p>
+                        <button class="btne" onclick="exportData()">📤 Export All Entries (JSON)</button>
+                        <button class="btns" onclick="clearAll()">🗑️ Clear All Data</button>
+                    </div>
+
+                    <div class="stttl" style="margin-top:6px">ℹ️ About</div>
+                    <div class="stcard" style="margin-bottom:8px">
+                        <p><strong
+                                style="color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.06em">Chronicles</strong>
+                            — a personal journal app. Entries are stored locally until Firebase is connected. Photos are
+                            resized and saved as base64 within your journal data.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /scwrap -->
+
+        <!-- BOTTOM NAV -->
+        <nav class="botnav">
+            <button class="nb on" id="nbHome" onclick="navTo('home')">
+                <span class="ico">🏠</span><span>Home</span>
+            </button>
+            <button class="nb" id="nbCalendar" onclick="navTo('calendar')">
+                <span class="ico">📅</span><span>Calendar</span>
+            </button>
+            <button class="nb fab" onclick="startNew()">
+                <div class="fab">✦</div>
+            </button>
+            <button class="nb" id="nbSettings" onclick="navTo('settings')">
+                <span class="ico">⚙️</span><span>Settings</span>
+            </button>
+            <button class="nb" style="visibility:hidden"><span class="ico">·</span></button>
+        </nav>
+
+    </div><!-- /app -->
+
+    <!-- ENTRY VIEW MODAL -->
+    <div class="movl" id="modal" onclick="maybeCloseModal(event)">
+        <div class="msheet">
+            <div class="mhandle"></div>
+            <div class="mscroll" id="mScroll">
+                <div id="mContent"></div>
+            </div>
+            <div class="macts">
+                <button class="medit" onclick="editCurrent()">✏️ Edit</button>
+                <button class="mdel" onclick="deleteCurrent()">🗑️ Delete</button>
+                <button class="mclose" onclick="closeModal()">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <!-- ═══════════════ SCRIPT ═══════════════ -->
+    <script type="module">
+        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+        // ── SPLASH STARS ──────────────────────────────────────────────
+        const starsCont = document.getElementById('spStars');
+        for (let i = 0; i < 65; i++) {
+            const s = document.createElement('div');
+            const sz = 1 + Math.random() * 1.8;
+            s.className = 'sp-star';
+            s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;
+      width:${sz}px;height:${sz}px;
+      --dur:${2 + Math.random() * 4}s;--delay:${Math.random() * 5}s;
+      opacity:${.05 + Math.random() * .4}`;
+            starsCont.appendChild(s);
+        }
+
+        // ── SPLASH → APP ──────────────────────────────────────────────
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('hide');
+            document.getElementById('app').classList.add('visible');
+        }, 2800);
+
+        // ── STATE ──────────────────────────────────────────────────────
+        let localStore = {};
+        let db = null;
+        let curScreen = 'home';
+        let curEntryId = null;    // null = new, else editing
+        let viewEntryId = null;
+        let calDate = new Date();
+        let selCalDate = null;
+        let curFilter = 'all';
+        window._pendPh = null;
+
+        // ── MOODS ─────────────────────────────────────────────────────
+        const MOODS = [
+            { e: '🌟', l: 'Amazing' }, { e: '😊', l: 'Good' }, { e: '😐', l: 'Okay' },
+            { e: '😔', l: 'Low' }, { e: '⚡', l: 'Energetic' }, { e: '🌙', l: 'Reflective' },
+            { e: '💭', l: 'Thoughtful' }, { e: '🔥', l: 'Excited' }, { e: '😰', l: 'Anxious' },
+            { e: '🥰', l: 'Grateful' }, { e: '😤', l: 'Frustrated' }, { e: '🌊', l: 'Calm' },
+        ];
+        const moodRow = document.querySelector('.moodrow');
+        MOODS.forEach(m => {
+            const b = document.createElement('button');
+            b.className = 'mbtn';
+            b.dataset.mood = m.e;
+            b.innerHTML = `${m.e} <span>${m.l}</span>`;
+            b.onclick = () => pickMood(m.e);
+            moodRow.appendChild(b);
+        });
+
+        // ── FIREBASE ──────────────────────────────────────────────────
+        function tryInitFb() {
+            try {
+                const cfg = JSON.parse(localStorage.getItem('chronicles_fb') || 'null');
+                if (!cfg || !cfg.apiKey || cfg.apiKey === 'YOUR_API_KEY') return;
+                // Avoid re-init if already initialized
+                const existing = getApps().find(a => a.name === 'chronicles');
+                const fbApp = existing || initializeApp(cfg, 'chronicles');
+                db = getDatabase(fbApp);
+                onValue(ref(db, 'journalEntries'), (snap) => {
+                    localStore = snap.val() || {};
+                    renderHome();
+                    renderCal();
+                }, (err) => {
+                    setFbSt('err', '✗ Realtime error: ' + err.message);
+                });
+                setFbSt('ok', '✓ Connected to Firebase');
+            } catch (e) {
+                console.warn('Firebase init:', e);
+                setFbSt('err', '✗ Config error — check your values');
+            }
+        }
+
+        function setFbSt(state, msg) {
+            const dot = document.getElementById('fbDot');
+            const txt = document.getElementById('fbTxt');
+            if (!dot) return;
+            dot.className = 'sdot ' + (state === 'ok' ? 'ok' : state === 'err' ? 'err' : 'off');
+            txt.textContent = msg;
+        }
+
+        window.saveFbCfg = function () {
+            const cfg = {
+                apiKey: document.getElementById('fbKey').value.trim(),
+                authDomain: document.getElementById('fbAuth').value.trim(),
+                databaseURL: document.getElementById('fbDB').value.trim(),
+                projectId: document.getElementById('fbPID').value.trim(),
+                storageBucket: document.getElementById('fbSB').value.trim(),
+                messagingSenderId: document.getElementById('fbMS').value.trim(),
+                appId: document.getElementById('fbAID').value.trim(),
+            };
+            if (!cfg.apiKey || !cfg.databaseURL) {
+                showToast('⚠️ API Key and Database URL are required'); return;
+            }
+            localStorage.setItem('chronicles_fb', JSON.stringify(cfg));
+            showToast('⏳ Connecting to Firebase…');
+            tryInitFb();
+        };
+
+        window.disconnFb = function () {
+            if (!confirm('Disconnect Firebase and clear saved config?')) return;
+            localStorage.removeItem('chronicles_fb');
+            db = null;
+            setFbSt('off', 'Not connected — using local storage');
+            showToast('Disconnected');
+        };
+
+        function loadCfgIntoForm() {
+            try {
+                const cfg = JSON.parse(localStorage.getItem('chronicles_fb') || 'null');
+                if (!cfg) return;
+                document.getElementById('fbKey').value = cfg.apiKey || '';
+                document.getElementById('fbAuth').value = cfg.authDomain || '';
+                document.getElementById('fbDB').value = cfg.databaseURL || '';
+                document.getElementById('fbPID').value = cfg.projectId || '';
+                document.getElementById('fbSB').value = cfg.storageBucket || '';
+                document.getElementById('fbMS').value = cfg.messagingSenderId || '';
+                document.getElementById('fbAID').value = cfg.appId || '';
+            } catch (e) { }
+        }
+
+        // ── STORE ──────────────────────────────────────────────────────
+        function getStore() {
+            if (db) return localStore;
+            try { return JSON.parse(localStorage.getItem('chronicles_data') || '{}'); }
+            catch { return {}; }
+        }
+
+        function saveStore(data) {
+            if (db) {
+                set(ref(db, 'journalEntries'), data).catch(() => showToast('⚠️ Firebase sync error'));
+            } else {
+                localStorage.setItem('chronicles_data', JSON.stringify(data));
+            }
+            localStore = data;
+            renderHome();
+            renderCal();
+        }
+
+        function uid() {
+            return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        }
+
+        function allEntries() {
+            return Object.values(getStore()).sort((a, b) => b.ts - a.ts);
+        }
+
+        // ── NAVIGATION ─────────────────────────────────────────────────
+        window.navTo = function (scr) {
+            if (curScreen === scr) return;
+            const oldEl = document.getElementById(curScreen + 'Screen');
+            const newEl = document.getElementById(scr + 'Screen');
+            if (!newEl) return;
+            oldEl?.classList.add('bye');
+            setTimeout(() => oldEl?.classList.remove('active', 'bye'), 340);
+            newEl.classList.add('active');
+            curScreen = scr;
+            updNB(scr);
+            updTB(scr);
+            if (scr === 'calendar') renderCal();
+            if (scr === 'settings') { loadCfgIntoForm(); tryInitFb(); }
+            if (scr === 'home') renderHome();
+        };
+
+        function updNB(scr) {
+            ['nbHome', 'nbCalendar', 'nbSettings'].forEach(id => {
+                document.getElementById(id)?.classList.remove('on');
+            });
+            const map = { home: 'nbHome', calendar: 'nbCalendar', settings: 'nbSettings' };
+            if (map[scr]) document.getElementById(map[scr])?.classList.add('on');
+        }
+
+        function updTB(scr) {
+            const titles = { home: 'Chronicles', calendar: 'Calendar', settings: 'Settings', write: 'New Entry' };
+            document.getElementById('tbTitle').textContent = titles[scr] || 'Chronicles';
+            const lBtn = document.getElementById('tbLeft');
+            const rBtn = document.getElementById('tbRight');
+            if (scr === 'write') {
+                lBtn.classList.remove('invisible');
+                rBtn.classList.remove('invisible');
+            } else {
+                lBtn.classList.add('invisible');
+                rBtn.classList.add('invisible');
+            }
+        }
+
+        window.tbLeftAct = function () {
+            if (curScreen !== 'write') return;
+            const hasContent = document.getElementById('wTitle').value || document.getElementById('wContent').value;
+            if (hasContent && !confirm('Discard this entry?')) return;
+            navTo('home');
+        };
+        window.tbRightAct = function () { saveEntry(); };
+
+        // ── HOME ────────────────────────────────────────────────────────
+        function updHdr() {
+            const now = new Date();
+            const h = now.getHours();
+            const g = h < 5 ? 'Good Night' : h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
+            document.getElementById('hgreet').textContent = g;
+            document.getElementById('hdate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        function calcStats(entries) {
+            const total = entries.length;
+            let words = 0;
+            entries.forEach(e => {
+                words += (e.content || '').trim().split(/\s+/).filter(Boolean).length;
+            });
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const datesSet = new Set(entries.map(e => e.date));
+            let streak = 0, d = new Date(today);
+            while (datesSet.has(d.toISOString().split('T')[0])) { streak++; d.setDate(d.getDate() - 1); }
+            return { total, words: words >= 1000 ? (Math.round(words / 100) / 10) + 'k' : words, streak };
+        }
+
+        function renderHome() {
+            updHdr();
+            const all = allEntries();
+            const s = calcStats(all);
+            document.getElementById('stTotal').textContent = s.total;
+            document.getElementById('stStreak').textContent = s.streak;
+            document.getElementById('stWords').textContent = s.words;
+            filterEntries();
+        }
+
+        window.setFilter = function (f, btn) {
+            curFilter = f;
+            document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
+            btn.classList.add('on');
+            filterEntries();
+        };
+
+        window.filterEntries = function () {
+            const q = (document.getElementById('srchIn')?.value || '').toLowerCase();
+            let entries = allEntries();
+            const now = new Date(); now.setHours(0, 0, 0, 0);
+            if (curFilter !== 'all') {
+                entries = entries.filter(e => {
+                    const ed = new Date(e.date + 'T00:00:00');
+                    if (curFilter === 'today') return e.date === now.toISOString().split('T')[0];
+                    if (curFilter === 'week') return (now - ed) / 86400000 >= 0 && (now - ed) / 86400000 < 7;
+                    if (curFilter === 'month') return ed.getMonth() === now.getMonth() && ed.getFullYear() === now.getFullYear();
+                    return true;
+                });
+            }
+            if (q) entries = entries.filter(e =>
+                (e.title || '').toLowerCase().includes(q) || (e.content || '').toLowerCase().includes(q)
+            );
+            const list = document.getElementById('elist');
+            if (!list) return;
+            if (!entries.length) {
+                list.innerHTML = `<div class="empty">
+        <div class="empty-ic">📖</div>
+        <div class="empty-ttl">${q ? 'No matches found' : 'No entries yet'}</div>
+        <div class="empty-sub">${q ? 'Try a different search' : 'Tap ✦ below to write your first entry'}</div>
+      </div>`;
+                return;
+            }
+            list.innerHTML = '';
+            entries.forEach((e, i) => {
+                const c = buildCard(e, i);
+                list.appendChild(c);
+            });
+        };
+
+        function buildCard(e, delay) {
+            const div = document.createElement('div');
+            div.className = 'ecard';
+            div.style.animationDelay = (delay * .06) + 's';
+            const wc = (e.content || '').trim().split(/\s+/).filter(Boolean).length;
+            let h = '';
+            if (e.photo) h += `<img class="ecard-photo" src="${e.photo}" alt="">`;
+            h += `<div class="ecard-body">
+      <div class="ecard-meta">
+        <span class="ecard-mood">${e.mood || '📖'}</span>
+        <span class="ecard-date">${fmtDate(e.date)}</span>
+      </div>
+      <div class="ecard-title">${esc(e.title || 'Untitled')}</div>
+      ${e.content ? `<div class="ecard-prev">${esc(e.content)}</div>` : ''}
+    </div>
+    <div class="ecard-foot">
+      <span class="ecard-wc">${wc} word${wc !== 1 ? 's' : ''}</span>
+      ${e.photo ? '<span class="ecard-ph">📷</span>' : ''}
+    </div>`;
+            div.innerHTML = h;
+            div.addEventListener('click', () => openModal(e.id));
+            return div;
+        }
+
+        function fmtDate(ds) {
+            if (!ds) return '';
+            const d = new Date(ds + 'T00:00:00');
+            const t = new Date(); t.setHours(0, 0, 0, 0);
+            const y = new Date(t); y.setDate(t.getDate() - 1);
+            if (d.toDateString() === t.toDateString()) return 'Today';
+            if (d.toDateString() === y.toDateString()) return 'Yesterday';
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: d.getFullYear() !== t.getFullYear() ? 'numeric' : undefined });
+        }
+
+        // ── WRITE / EDIT ────────────────────────────────────────────────
+        window.startNew = function () {
+            curEntryId = null;
+            window._pendPh = null;
+            document.getElementById('wDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('wTitle').value = '';
+            document.getElementById('wContent').value = '';
+            document.getElementById('wwc').textContent = '0 words';
+            document.querySelectorAll('.mbtn').forEach((b, i) => b.classList.toggle('sel', i === 0));
+            resetPhArea();
+
+            const old = document.getElementById(curScreen + 'Screen');
+            const newEl = document.getElementById('writeScreen');
+            old?.classList.remove('active');
+            newEl.classList.add('active');
+            curScreen = 'write';
+            updTB('write');
+            document.getElementById('tbTitle').textContent = 'New Entry';
+            document.getElementById('tbRight').textContent = 'Save';
+            updNB('');
+            setTimeout(() => document.getElementById('wTitle').focus(), 380);
+        };
+
+        function resetPhArea() {
+            const a = document.getElementById('wPhArea');
+            const i = document.getElementById('wPhImg');
+            const r = document.getElementById('wPhRm');
+            i.src = ''; i.style.display = 'none';
+            r.style.display = 'none';
+            a.classList.remove('has');
+            document.getElementById('phInput').value = '';
+        }
+
+        function pickMood(emoji) {
+            document.querySelectorAll('.mbtn').forEach(b => b.classList.toggle('sel', b.dataset.mood === emoji));
+        }
+
+        window.handlePh = function (input) {
+            const f = input.files[0]; if (!f) return;
+            window._pendPh = f;
+            const i = document.getElementById('wPhImg');
+            const r = document.getElementById('wPhRm');
+            const a = document.getElementById('wPhArea');
+            i.src = URL.createObjectURL(f);
+            i.style.display = 'block';
+            r.style.display = 'flex';
+            a.classList.add('has');
+        };
+
+        window.rmPhoto = function (e) {
+            e.stopPropagation();
+            window._pendPh = null;
+            resetPhArea();
+        };
+
+        window.wcCount = function (el) {
+            const w = el.value.trim().split(/\s+/).filter(Boolean).length;
+            document.getElementById('wwc').textContent = w + (w === 1 ? ' word' : ' words');
+        };
+
+        function resize64(file, maxW = 1200, maxH = 1200) {
+            return new Promise(res => {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let { width: w, height: h } = img;
+                        if (w > maxW || h > maxH) { const r = Math.min(maxW / w, maxH / h); w = Math.round(w * r); h = Math.round(h * r); }
+                        const c = document.createElement('canvas');
+                        c.width = w; c.height = h;
+                        c.getContext('2d').drawImage(img, 0, 0, w, h);
+                        res(c.toDataURL('image/jpeg', .82));
+                    };
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function saveEntry() {
+            const title = document.getElementById('wTitle').value.trim();
+            const content = document.getElementById('wContent').value.trim();
+            const date = document.getElementById('wDate').value;
+            const mood = document.querySelector('.mbtn.sel')?.dataset?.mood || '📖';
+            if (!title && !content) { showToast('Add a title or some text first ✍️'); return; }
+            const btn = document.getElementById('tbRight');
+            btn.disabled = true;
+            let photo = '';
+            if (curEntryId) { photo = getStore()[curEntryId]?.photo || ''; }
+            if (window._pendPh) {
+                showToast('⏳ Processing photo…');
+                photo = await resize64(window._pendPh);
+                window._pendPh = null;
+            }
+            const store = getStore();
+            const id = curEntryId || uid();
+            const oldTs = curEntryId ? (store[curEntryId]?.ts || Date.now()) : Date.now();
+            store[id] = { id, title, content, date, mood, photo, ts: curEntryId ? oldTs : Date.now() };
+            saveStore(store);
+            showToast(curEntryId ? '✓ Entry updated' : '✓ Entry saved ✦');
+            btn.disabled = false;
+            curEntryId = null;
+            navTo('home');
+        }
+
+        // ── MODAL ───────────────────────────────────────────────────────
+        function openModal(id) {
+            const e = getStore()[id]; if (!e) return;
+            viewEntryId = id;
+            let h = '';
+            if (e.photo) h += `<img class="mphoto" src="${e.photo}" alt="">`;
+            h += `<div class="mcontent">
+      <div class="mmeta">
+        <span class="mmood">${e.mood || '📖'}</span>
+        <span class="mdate">${fmtDate(e.date)}</span>
+      </div>
+      <div class="mtitle">${esc(e.title || 'Untitled')}</div>
+      ${e.content ? `<div class="mbody">${esc(e.content)}</div>` : ''}
+    </div>`;
+            document.getElementById('mContent').innerHTML = h;
+            document.getElementById('mScroll').scrollTop = 0;
+            document.getElementById('modal').classList.add('on');
+        }
+
+        window.closeModal = function () {
+            document.getElementById('modal').classList.remove('on');
+            viewEntryId = null;
+        };
+
+        window.maybeCloseModal = function (e) {
+            if (e.target === document.getElementById('modal')) closeModal();
+        };
+
+        window.editCurrent = function () {
+            if (!viewEntryId) return;
+            const e = getStore()[viewEntryId]; if (!e) return;
+            closeModal();
+            curEntryId = e.id;
+            window._pendPh = null;
+            document.getElementById('wDate').value = e.date || new Date().toISOString().split('T')[0];
+            document.getElementById('wTitle').value = e.title || '';
+            document.getElementById('wContent').value = e.content || '';
+            wcCount(document.getElementById('wContent'));
+            document.querySelectorAll('.mbtn').forEach(b => b.classList.toggle('sel', b.dataset.mood === e.mood));
+            if (e.photo) {
+                const i = document.getElementById('wPhImg');
+                i.src = e.photo; i.style.display = 'block';
+                document.getElementById('wPhRm').style.display = 'flex';
+                document.getElementById('wPhArea').classList.add('has');
+            } else { resetPhArea(); }
+            const old = document.getElementById(curScreen + 'Screen');
+            old?.classList.remove('active');
+            document.getElementById('writeScreen').classList.add('active');
+            curScreen = 'write';
+            updTB('write');
+            document.getElementById('tbTitle').textContent = 'Edit Entry';
+            document.getElementById('tbRight').textContent = 'Update';
+            updNB('');
+        };
+
+        window.deleteCurrent = function () {
+            if (!viewEntryId) return;
+            if (!confirm('Delete this entry permanently?')) return;
+            const store = getStore();
+            delete store[viewEntryId];
+            saveStore(store);
+            closeModal();
+            showToast('🗑️ Entry deleted');
+        };
+
+        // ── CALENDAR ────────────────────────────────────────────────────
+        function renderCal() {
+            const yr = calDate.getFullYear(), mo = calDate.getMonth();
+            document.getElementById('calMttl').textContent =
+                calDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            const store = getStore();
+            const hasDate = new Set(Object.values(store).map(e => e.date).filter(Boolean));
+            const firstDow = new Date(yr, mo, 1).getDay();
+            const lastDay = new Date(yr, mo + 1, 0).getDate();
+            const todayStr = new Date().toISOString().split('T')[0];
+            const grid = document.getElementById('calGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < firstDow; i++) {
+                const d = document.createElement('div'); d.className = 'cday empty'; grid.appendChild(d);
+            }
+            for (let d = 1; d <= lastDay; d++) {
+                const ds = `${yr}-${String(mo + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const btn = document.createElement('button');
+                btn.className = 'cday';
+                btn.textContent = d;
+                if (ds === todayStr) btn.classList.add('oday');
+                if (hasDate.has(ds)) btn.classList.add('has');
+                if (selCalDate === ds) btn.classList.add('sel');
+                if (hasDate.has(ds)) {
+                    const dot = document.createElement('div'); dot.className = 'cdot'; btn.appendChild(dot);
+                }
+                btn.addEventListener('click', () => { selCalDate = selCalDate === ds ? null : ds; renderCal(); });
+                grid.appendChild(btn);
+            }
+            renderCalSel();
+        }
+
+        function renderCalSel() {
+            const box = document.getElementById('calSel');
+            if (!selCalDate) { box.innerHTML = ''; return; }
+            const entries = Object.values(getStore()).filter(e => e.date === selCalDate);
+            const dl = new Date(selCalDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            if (!entries.length) {
+                box.innerHTML = `<div class="calsel-ttl">${dl}</div>
+        <div class="empty" style="padding:20px 0"><div class="empty-ic" style="font-size:2rem">📝</div>
+        <div class="empty-sub">No entries for this day</div></div>`;
+                return;
+            }
+            box.innerHTML = `<div class="calsel-ttl">${dl} — ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}</div>`;
+            const list = document.createElement('div'); list.className = 'elist';
+            entries.sort((a, b) => b.ts - a.ts).forEach((e, i) => list.appendChild(buildCard(e, i)));
+            box.appendChild(list);
+        }
+
+        window.calShift = function (dir) {
+            calDate.setMonth(calDate.getMonth() + dir);
+            renderCal();
+        };
+
+        // ── EXPORT / CLEAR ─────────────────────────────────────────────
+        window.exportData = function () {
+            const data = JSON.stringify(getStore(), null, 2);
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+            a.download = 'chronicles_export_' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+            showToast('📤 Export started');
+        };
+
+        window.clearAll = function () {
+            if (!confirm('Delete ALL entries? This cannot be undone.')) return;
+            saveStore({});
+            showToast('🗑️ All entries cleared');
+        };
+
+        // ── HELPERS ─────────────────────────────────────────────────────
+        function esc(s) {
+            return String(s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), 2900);
+        }
+
+        // expose needed globals
+        window.wcCount = wcCount;
+        window.handlePh = handlePh;
+        window.rmPhoto = rmPhoto;
+
+        // ── INIT ────────────────────────────────────────────────────────
+        tryInitFb();
+        renderHome();
+        updTB('home');
+
+    </script>
+</body>
+
+</html>
