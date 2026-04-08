@@ -1628,6 +1628,26 @@
 
     <!-- ═══════════════ SCRIPT ═══════════════ -->
     <script type="module">
+
+        <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyApqutPbgXMFMnzQWSd0sF9fXnEGo1XPD4",
+    authDomain: "chronos-3f4e8.firebaseapp.com",
+    databaseURL: "https://chronos-3f4e8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "chronos-3f4e8",
+    storageBucket: "chronos-3f4e8.firebasestorage.app",
+    messagingSenderId: "412812888723",
+    appId: "1:412812888723:web:073a9accf0a62381629b66"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
