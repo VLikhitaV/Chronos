@@ -1221,6 +1221,193 @@
             background: rgba(201, 168, 76, .08);
         }
 
+        /* ═══ AUTH SCREEN ═══ */
+        #authScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 800;
+            background: radial-gradient(ellipse at 50% 55%, #0D2137 0%, #060E1A 72%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            transition: opacity .5s ease, visibility .5s ease;
+        }
+
+        #authScreen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .auth-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: .16em;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--goldbr) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .auth-sub {
+            font-size: .72rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 32px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 360px;
+            background: var(--bgcard);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 26px 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .82rem;
+            letter-spacing: .07em;
+            color: var(--text3);
+            cursor: pointer;
+            position: relative;
+            transition: color .2s;
+        }
+
+        .auth-tab.on {
+            color: var(--gold);
+        }
+
+        .auth-tab.on::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .auth-field {
+            margin-bottom: 14px;
+        }
+
+        .auth-field label {
+            display: block;
+            font-size: .66rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--text3);
+            margin-bottom: 6px;
+        }
+
+        .auth-field input {
+            width: 100%;
+            background: var(--bginput);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .auth-field input:focus {
+            border-color: var(--bordhi);
+        }
+
+        .auth-field input::placeholder {
+            color: var(--text4);
+            font-size: .8rem;
+        }
+
+        .auth-err {
+            font-size: .78rem;
+            color: var(--red);
+            text-align: center;
+            min-height: 18px;
+            margin-bottom: 10px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            color: var(--bg);
+            border: none;
+            border-radius: 10px;
+            padding: 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .9rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: .05em;
+            transition: opacity .2s, transform .2s;
+        }
+
+        .auth-btn:hover {
+            opacity: .88;
+            transform: scale(.99);
+        }
+
+        .auth-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* account screen */
+        .acc-avatar {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--goldlt));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--bg);
+            font-weight: 700;
+            margin: 0 auto 10px;
+        }
+
+        .acc-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            letter-spacing: .1em;
+            color: var(--text);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .acc-since {
+            font-size: .72rem;
+            color: var(--text3);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         /* ═══ ENTRY MODAL ═══ */
         .movl {
             position: fixed;
@@ -1452,6 +1639,48 @@
     </div>
 
     <!-- ═══════════════ APP ═══════════════ -->
+    <!-- ═══ AUTH SCREEN ═══ -->
+    <div id="authScreen">
+        <div class="auth-logo">Chronicles</div>
+        <div class="auth-sub">Your Private Journal</div>
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="auth-tab on" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</button>
+            </div>
+            <div id="authLoginPanel">
+                <div class="auth-field">
+                    <label>Username</label>
+                    <input type="text" id="loginUser" placeholder="your username" autocomplete="username"
+                        autocorrect="off" autocapitalize="off">
+                </div>
+                <div class="auth-field">
+                    <label>Password</label>
+                    <input type="password" id="loginPass" placeholder="your password" autocomplete="current-password">
+                </div>
+                <div class="auth-err" id="loginErr"></div>
+                <button class="auth-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+            </div>
+            <div id="authSignupPanel" style="display:none">
+                <div class="auth-field">
+                    <label>Choose a Username</label>
+                    <input type="text" id="signupUser" placeholder="e.g. likhita" autocorrect="off"
+                        autocapitalize="off">
+                </div>
+                <div class="auth-field">
+                    <label>Password</label>
+                    <input type="password" id="signupPass" placeholder="choose a password" autocomplete="new-password">
+                </div>
+                <div class="auth-field">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupPass2" placeholder="repeat password" autocomplete="new-password">
+                </div>
+                <div class="auth-err" id="signupErr"></div>
+                <button class="auth-btn" id="signupBtn" onclick="doSignup()">Create Account →</button>
+            </div>
+        </div>
+    </div>
+
     <div id="app">
 
         <!-- TOP BAR -->
@@ -1542,48 +1771,30 @@
                 </div>
             </div>
 
-            <!-- SETTINGS -->
+            <!-- ACCOUNT -->
             <div class="screen" id="settingsScreen">
                 <div class="stsec">
-                    <div class="stttl">⚡ Firebase Sync</div>
-                    <div class="stcard">
-                        <p>Connect to Firebase Realtime Database to sync your journal across all your devices. Your data
-                            stays in your own private project.</p>
-                        <div class="fbstat">
-                            <div class="sdot off" id="fbDot"></div>
-                            <span class="stxt" id="fbTxt">Not connected — using local storage</span>
-                        </div>
-                        <div class="sfield"><label>API Key</label><input type="text" id="fbKey" placeholder="AIzaSy…">
-                        </div>
-                        <div class="sfield"><label>Auth Domain</label><input type="text" id="fbAuth"
-                                placeholder="your-app.firebaseapp.com"></div>
-                        <div class="sfield"><label>Database URL</label><input type="text" id="fbDB"
-                                placeholder="https://your-app-default-rtdb.firebaseio.com"></div>
-                        <div class="sfield"><label>Project ID</label><input type="text" id="fbPID"
-                                placeholder="your-project-id"></div>
-                        <div class="sfield"><label>Storage Bucket</label><input type="text" id="fbSB"
-                                placeholder="your-app.appspot.com"></div>
-                        <div class="sfield"><label>Messaging Sender ID</label><input type="text" id="fbMS"
-                                placeholder="123456789012"></div>
-                        <div class="sfield"><label>App ID</label><input type="text" id="fbAID"
-                                placeholder="1:123:web:abc123"></div>
-                        <button class="btng" onclick="saveFbCfg()">🔗 Connect to Firebase</button>
-                        <button class="btns" onclick="disconnFb()">Disconnect &amp; Clear Config</button>
+                    <div class="stttl">👤 Account</div>
+                    <div class="stcard" style="text-align:center;padding-bottom:20px">
+                        <div class="acc-avatar" id="accAvatar">?</div>
+                        <div class="acc-name" id="accName">—</div>
+                        <div class="acc-since" id="accSince"></div>
+                        <button class="btns" onclick="doLogout()">Sign Out</button>
                     </div>
 
                     <div class="stttl" style="margin-top:6px">📓 Data Management</div>
                     <div class="stcard">
-                        <p>Export a copy of all your journal entries as a JSON file, or clear all local data.</p>
+                        <p>Export a copy of all your journal entries as a JSON file, or clear all your entries.</p>
                         <button class="btne" onclick="exportData()">📤 Export All Entries (JSON)</button>
-                        <button class="btns" onclick="clearAll()">🗑️ Clear All Data</button>
+                        <button class="btns" onclick="clearAll()">🗑️ Clear All My Entries</button>
                     </div>
 
                     <div class="stttl" style="margin-top:6px">ℹ️ About</div>
                     <div class="stcard" style="margin-bottom:8px">
                         <p><strong
                                 style="color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.06em">Chronicles</strong>
-                            — a personal journal app. Entries are stored locally until Firebase is connected. Photos are
-                            resized and saved as base64 within your journal data.</p>
+                            — a personal journal app. Your entries are synced to your private account on Firebase.
+                            Photos are resized and saved as base64 within your journal data.</p>
                     </div>
                 </div>
             </div>
@@ -1602,7 +1813,7 @@
                 <div class="fab">✦</div>
             </button>
             <button class="nb" id="nbSettings" onclick="navTo('settings')">
-                <span class="ico">⚙️</span><span>Settings</span>
+                <span class="ico">👤</span><span>Account</span>
             </button>
             <button class="nb" style="visibility:hidden"><span class="ico">·</span></button>
         </nav>
@@ -1628,28 +1839,22 @@
 
     <!-- ═══════════════ SCRIPT ═══════════════ -->
     <script type="module">
-
-        <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyApqutPbgXMFMnzQWSd0sF9fXnEGo1XPD4",
-    authDomain: "chronos-3f4e8.firebaseapp.com",
-    databaseURL: "https://chronos-3f4e8-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "chronos-3f4e8",
-    storageBucket: "chronos-3f4e8.firebasestorage.app",
-    messagingSenderId: "412812888723",
-    appId: "1:412812888723:web:073a9accf0a62381629b66"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+        import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyApqutPbgXMFMnzQWSd0sF9fXnEGo1XPD4",
+            authDomain: "chronos-3f4e8.firebaseapp.com",
+            databaseURL: "https://chronos-3f4e8-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "chronos-3f4e8",
+            storageBucket: "chronos-3f4e8.firebasestorage.app",
+            messagingSenderId: "412812888723",
+            appId: "1:412812888723:web:073a9accf0a62381629b66"
+        };
+
+        const existing = getApps().find(a => a.name === 'chronicles');
+        const fbApp = existing || initializeApp(firebaseConfig, 'chronicles');
+        const db = getDatabase(fbApp);
 
         // ── SPLASH STARS ──────────────────────────────────────────────
         const starsCont = document.getElementById('spStars');
@@ -1664,17 +1869,27 @@
             starsCont.appendChild(s);
         }
 
-        // ── SPLASH → APP ──────────────────────────────────────────────
+        // ── SPLASH → AUTH/APP ─────────────────────────────────────────
         setTimeout(() => {
             document.getElementById('splash').classList.add('hide');
-            document.getElementById('app').classList.add('visible');
+            const saved = localStorage.getItem('chronicles_session');
+            if (saved) {
+                try {
+                    const sess = JSON.parse(saved);
+                    currentUser = sess.username;
+                    enterApp();
+                } catch { showAuthScreen(); }
+            } else {
+                showAuthScreen();
+            }
         }, 2800);
 
         // ── STATE ──────────────────────────────────────────────────────
         let localStore = {};
-        let db = null;
+        let currentUser = null;
+        let entriesUnsub = null;
         let curScreen = 'home';
-        let curEntryId = null;    // null = new, else editing
+        let curEntryId = null;
         let viewEntryId = null;
         let calDate = new Date();
         let selCalDate = null;
@@ -1698,90 +1913,153 @@
             moodRow.appendChild(b);
         });
 
-        // ── FIREBASE ──────────────────────────────────────────────────
-        function tryInitFb() {
+        // ── AUTH HELPERS ───────────────────────────────────────────────
+        function showAuthScreen() {
+            document.getElementById('authScreen').classList.remove('hide');
+            document.getElementById('app').classList.remove('visible');
+        }
+
+        function enterApp() {
+            document.getElementById('authScreen').classList.add('hide');
+            document.getElementById('app').classList.add('visible');
+            subscribeEntries();
+            updAccPanel();
+            renderHome();
+            updTB('home');
+        }
+
+        function subscribeEntries() {
+            if (entriesUnsub) entriesUnsub();
+            const entriesRef = ref(db, `users/${currentUser}/entries`);
+            entriesUnsub = onValue(entriesRef, (snap) => {
+                localStore = snap.val() || {};
+                renderHome();
+                renderCal();
+            });
+        }
+
+        function updAccPanel() {
+            const avatar = document.getElementById('accAvatar');
+            const name = document.getElementById('accName');
+            const since = document.getElementById('accSince');
+            if (!currentUser) return;
+            avatar.textContent = currentUser.charAt(0).toUpperCase();
+            name.textContent = currentUser;
+            // fetch join date
+            get(ref(db, `users/${currentUser}/joinedAt`)).then(s => {
+                if (s.exists()) {
+                    const d = new Date(s.val()).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                    since.textContent = 'Member since ' + d;
+                }
+            });
+        }
+
+        window.switchAuthTab = function (tab) {
+            document.getElementById('authLoginPanel').style.display = tab === 'login' ? '' : 'none';
+            document.getElementById('authSignupPanel').style.display = tab === 'signup' ? '' : 'none';
+            document.getElementById('tabLogin').classList.toggle('on', tab === 'login');
+            document.getElementById('tabSignup').classList.toggle('on', tab === 'signup');
+            document.getElementById('loginErr').textContent = '';
+            document.getElementById('signupErr').textContent = '';
+        };
+
+        // sanitize username key for Firebase path (no dots, #, $, [, ], /)
+        function sanitizeKey(u) { return u.toLowerCase().replace(/[^a-z0-9_-]/g, '_'); }
+
+        window.doLogin = async function () {
+            const rawUser = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const errEl = document.getElementById('loginErr');
+            const btn = document.getElementById('loginBtn');
+            if (!rawUser || !pass) { errEl.textContent = 'Enter username and password.'; return; }
+            const username = sanitizeKey(rawUser);
+            btn.disabled = true;
+            btn.textContent = 'Signing in…';
             try {
-                const cfg = JSON.parse(localStorage.getItem('chronicles_fb') || 'null');
-                if (!cfg || !cfg.apiKey || cfg.apiKey === 'YOUR_API_KEY') return;
-                // Avoid re-init if already initialized
-                const existing = getApps().find(a => a.name === 'chronicles');
-                const fbApp = existing || initializeApp(cfg, 'chronicles');
-                db = getDatabase(fbApp);
-                onValue(ref(db, 'journalEntries'), (snap) => {
-                    localStore = snap.val() || {};
-                    renderHome();
-                    renderCal();
-                }, (err) => {
-                    setFbSt('err', '✗ Realtime error: ' + err.message);
-                });
-                setFbSt('ok', '✓ Connected to Firebase');
+                const snap = await get(ref(db, `users/${username}`));
+                if (!snap.exists()) {
+                    errEl.textContent = 'No account found. Create one first.';
+                } else {
+                    const data = snap.val();
+                    if (data.password !== pass) {
+                        errEl.textContent = 'Incorrect password.';
+                    } else {
+                        currentUser = username;
+                        localStorage.setItem('chronicles_session', JSON.stringify({ username }));
+                        enterApp();
+                    }
+                }
             } catch (e) {
-                console.warn('Firebase init:', e);
-                setFbSt('err', '✗ Config error — check your values');
+                errEl.textContent = 'Connection error. Try again.';
+                console.error(e);
             }
-        }
-
-        function setFbSt(state, msg) {
-            const dot = document.getElementById('fbDot');
-            const txt = document.getElementById('fbTxt');
-            if (!dot) return;
-            dot.className = 'sdot ' + (state === 'ok' ? 'ok' : state === 'err' ? 'err' : 'off');
-            txt.textContent = msg;
-        }
-
-        window.saveFbCfg = function () {
-            const cfg = {
-                apiKey: document.getElementById('fbKey').value.trim(),
-                authDomain: document.getElementById('fbAuth').value.trim(),
-                databaseURL: document.getElementById('fbDB').value.trim(),
-                projectId: document.getElementById('fbPID').value.trim(),
-                storageBucket: document.getElementById('fbSB').value.trim(),
-                messagingSenderId: document.getElementById('fbMS').value.trim(),
-                appId: document.getElementById('fbAID').value.trim(),
-            };
-            if (!cfg.apiKey || !cfg.databaseURL) {
-                showToast('⚠️ API Key and Database URL are required'); return;
-            }
-            localStorage.setItem('chronicles_fb', JSON.stringify(cfg));
-            showToast('⏳ Connecting to Firebase…');
-            tryInitFb();
+            btn.disabled = false;
+            btn.textContent = 'Sign In →';
         };
 
-        window.disconnFb = function () {
-            if (!confirm('Disconnect Firebase and clear saved config?')) return;
-            localStorage.removeItem('chronicles_fb');
-            db = null;
-            setFbSt('off', 'Not connected — using local storage');
-            showToast('Disconnected');
-        };
-
-        function loadCfgIntoForm() {
+        window.doSignup = async function () {
+            const rawUser = document.getElementById('signupUser').value.trim();
+            const pass = document.getElementById('signupPass').value;
+            const pass2 = document.getElementById('signupPass2').value;
+            const errEl = document.getElementById('signupErr');
+            const btn = document.getElementById('signupBtn');
+            if (!rawUser) { errEl.textContent = 'Choose a username.'; return; }
+            if (rawUser.length < 2) { errEl.textContent = 'Username must be at least 2 characters.'; return; }
+            if (!pass) { errEl.textContent = 'Choose a password.'; return; }
+            if (pass.length < 4) { errEl.textContent = 'Password must be at least 4 characters.'; return; }
+            if (pass !== pass2) { errEl.textContent = 'Passwords do not match.'; return; }
+            const username = sanitizeKey(rawUser);
+            btn.disabled = true;
+            btn.textContent = 'Creating…';
             try {
-                const cfg = JSON.parse(localStorage.getItem('chronicles_fb') || 'null');
-                if (!cfg) return;
-                document.getElementById('fbKey').value = cfg.apiKey || '';
-                document.getElementById('fbAuth').value = cfg.authDomain || '';
-                document.getElementById('fbDB').value = cfg.databaseURL || '';
-                document.getElementById('fbPID').value = cfg.projectId || '';
-                document.getElementById('fbSB').value = cfg.storageBucket || '';
-                document.getElementById('fbMS').value = cfg.messagingSenderId || '';
-                document.getElementById('fbAID').value = cfg.appId || '';
-            } catch (e) { }
-        }
+                const snap = await get(ref(db, `users/${username}`));
+                if (snap.exists()) {
+                    errEl.textContent = 'Username already taken. Try another.';
+                } else {
+                    await set(ref(db, `users/${username}`), {
+                        password: pass,
+                        displayName: rawUser,
+                        joinedAt: Date.now()
+                    });
+                    currentUser = username;
+                    localStorage.setItem('chronicles_session', JSON.stringify({ username }));
+                    showToast('✦ Welcome to Chronicles, ' + rawUser + '!');
+                    enterApp();
+                }
+            } catch (e) {
+                errEl.textContent = 'Connection error. Try again.';
+                console.error(e);
+            }
+            btn.disabled = false;
+            btn.textContent = 'Create Account →';
+        };
+
+        window.doLogout = function () {
+            if (!confirm('Sign out of Chronicles?')) return;
+            localStorage.removeItem('chronicles_session');
+            currentUser = null;
+            localStore = {};
+            if (entriesUnsub) { entriesUnsub(); entriesUnsub = null; }
+            navTo('home');
+            setTimeout(() => showAuthScreen(), 100);
+        };
+
+        // enter key support on auth inputs
+        document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+        document.getElementById('signupPass2').addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
+        document.getElementById('loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
+        document.getElementById('signupPass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('signupPass2').focus(); });
+
 
         // ── STORE ──────────────────────────────────────────────────────
         function getStore() {
-            if (db) return localStore;
-            try { return JSON.parse(localStorage.getItem('chronicles_data') || '{}'); }
-            catch { return {}; }
+            return localStore;
         }
 
         function saveStore(data) {
-            if (db) {
-                set(ref(db, 'journalEntries'), data).catch(() => showToast('⚠️ Firebase sync error'));
-            } else {
-                localStorage.setItem('chronicles_data', JSON.stringify(data));
-            }
+            if (!currentUser) return;
+            set(ref(db, `users/${currentUser}/entries`), data)
+                .catch(() => showToast('⚠️ Sync error'));
             localStore = data;
             renderHome();
             renderCal();
@@ -1808,7 +2086,7 @@
             updNB(scr);
             updTB(scr);
             if (scr === 'calendar') renderCal();
-            if (scr === 'settings') { loadCfgIntoForm(); tryInitFb(); }
+            if (scr === 'settings') updAccPanel();
             if (scr === 'home') renderHome();
         };
 
@@ -1821,7 +2099,7 @@
         }
 
         function updTB(scr) {
-            const titles = { home: 'Chronicles', calendar: 'Calendar', settings: 'Settings', write: 'New Entry' };
+            const titles = { home: 'Chronicles', calendar: 'Calendar', settings: 'Account', write: 'New Entry' };
             document.getElementById('tbTitle').textContent = titles[scr] || 'Chronicles';
             const lBtn = document.getElementById('tbLeft');
             const rBtn = document.getElementById('tbRight');
@@ -2209,7 +2487,6 @@
         window.rmPhoto = rmPhoto;
 
         // ── INIT ────────────────────────────────────────────────────────
-        tryInitFb();
         renderHome();
         updTB('home');
 
